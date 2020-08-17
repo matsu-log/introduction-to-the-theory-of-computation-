@@ -1,0 +1,73 @@
+\documentclass[a4paper]{ltjsarticle}
+\usepackage{luatexja}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[no-math]{fontspec}
+\usepackage[unicode,hidelinks,pdfusetitle]{hyperref}
+\usepackage{tcolorbox}
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage{latexsym}
+\usepackage{mathrsfs}
+\usepackage{braket}
+\usepackage{graphicx}
+\usepackage{tikz,scsnowman}
+\usepackage{amsthm}
+\def\qed{\hfill $\Box$}
+\newtheorem{dfn}{定義}
+\newtheorem{thm}{定理}
+\newcommand{\triset}[3]{\overset{#3}{\underset{#1}{#2}}}
+\begin{document}
+\title{unionのDFAにおける証明の補足}
+\date{}
+\author{}
+\maketitle
+\begin{abstract}
+p.45-p.47における証明において、alphabetが同じという仮定があったので、その仮定なしの一般化した証明を載せておきます.
+\end{abstract}
+
+\begin{tcolorbox}[title = Theorem 1.25]
+  The class of regular languages is closed under the union operation
+\end{tcolorbox}
+
+\section*{証明}
+$A_1,A_2$を任意にとってきた正規言語とします.
+
+$A_1$を認識するDFAを$M_1$,$A_2$を認識するDFAを$M_2$とします.
+
+$M_1=(Q_1,\Sigma_1,\delta_1,q_1,F_1), M_2=(Q_2,\Sigma_2,\delta_2,q_2,F_2)$であるとします.
+
+このとき, $A_1 \cup A_2$を認識するDFA$M$を次のように構成します.
+
+$M=((Q_1\cup\Set{s})\times (Q_2\cup\Set{s}),\Sigma_1\cup\Sigma_2,\delta,(q_1,q_2),F)$とします. ただし、次に述べる条件を$\delta,F,s$は満たします.
+
+1.$s$は$Q_1$にも$Q_2$にも含まれない要素です.
+
+2.$\delta\colon ((Q_1\cup\Set{s})\times (Q_2\cup\Set{s}))\times (\Sigma_1\cup\Sigma_2) \rightarrow ((Q_1\cup\Set{s})\times (Q_2\cup\Set{s}))$は次のように定義します.
+
+そのために$\delta_1,\delta_2$を次のように拡張します.
+
+$\delta_1'\colon (Q_1\cup\Set{s})\times(\Sigma_1\cup\Sigma_2) \rightarrow (Q_1\cup\Set{s})を
+\delta_1'(r_1,a)=
+\begin{cases}
+  \delta_1(r_1,a) & r_1\in Q_1,a\in\Sigma_1\\
+  s & otherwise\\
+\end{cases}$
+と定めます.
+
+同様に
+$\delta_2'\colon (Q_2\cup\Set{s})\times(\Sigma_1\cup\Sigma_2) \rightarrow (Q_2\cup\Set{s})を
+\delta_2'(r_2,a)=
+\begin{cases}
+  \delta_2(r_2,a) & r_2\in Q_2,a\in\Sigma_2\\
+  s & otherwise\\
+\end{cases}$
+と定めます.
+
+この$\delta_1',\delta_2'$を利用して, $\delta((r_1,r_2),a) = (\delta_1'(r_1,a),\delta_2'(r_2,a))$として$\delta$を定めます.
+
+3.$F=\Set{(r_1,r_2)|(r_1\in F_1 \,or\, r_2\in F_2)}$.
+
+以上の3条件を満たす$M$は$A_1\cup A_2$を認識する言語になっています.
+
+\end{document}
